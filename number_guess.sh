@@ -2,7 +2,7 @@
 
 PSQL="psql --username=freecodecamp --dbname=number_guess -t --no-align -c"
 
-# Function to get user info or insert new user
+# Function to get user info or insert new user.
 get_user() {
   USERNAME=$1
   USER_INFO=$($PSQL "SELECT user_id, games_played, best_game FROM users WHERE username='$USERNAME'")
@@ -22,7 +22,7 @@ get_user() {
   fi
 }
 
-# Function to update user statistics
+# Function to update user statistics.
 update_user_stats() {
   USER_ID=$1
   GUESSES=$2
