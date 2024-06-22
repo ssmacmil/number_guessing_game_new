@@ -10,11 +10,14 @@ get_user() {
   if [[ -z $USER_INFO ]]; then
     echo "Welcome, $USERNAME! It looks like this is your first time here."
     INSERT_USER_RESULT=$($PSQL "INSERT INTO users(username) VALUES('$USERNAME')")
-    USER_ID=$($PSQL "SELECT user_id FROM users WHERE username='$USERNAME'")
-    GAMES_PLAYED=0
-    BEST_GAME=NULL
+    USER_INFO=$($PSQL "SELECT user_id, games_played, best_game FROM users WHERE username='$USERNAME'")
+  fi
+
+  IFS="|" read -r USER_ID GAMES_PLAYED BEST_GAME <<< "$USER_INFO"
+  
+  if [[ -z $BEST_GAME ]]; then
+    echo "Welcome back, $USERNAME! You have played $GAMES_PLAYED games, and your best game took no guesses yet."
   else
-    IFS="|" read -r USER_ID GAMES_PLAYED BEST_GAME <<< "$USER_INFO"
     echo "Welcome back, $USERNAME! You have played $GAMES_PLAYED games, and your best game took $BEST_GAME guesses."
   fi
 }
